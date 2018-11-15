@@ -1,5 +1,6 @@
 {%extends 'question/base.html'%}
 {%block body%}
+    <h1>{{question.user}}</h1>
     <h1>{{question.title}}</h1>
     <h3>{{question.answerA}} : {{A|length}} VS {{question.answerB}} : {{B|length}}</h3>
     <div class="progress">

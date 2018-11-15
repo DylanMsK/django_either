@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, resolve_url
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from question.forms import *
 from .models import Question
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -11,17 +12,21 @@ def list(request):
     page = request.GET.get('page')
     questions = paginator.get_page(page)
     return render(request, 'question/list.html', {'questions': questions})
-    
+
+@login_required
 def create(request):
     if request.method == 'POST':
         form = QuestionForm(request.POST)
         if form.is_valid():
-            form.save()
+            question = form.save(commit=False)
+            question.user = request.user
+            question.save()
             return redirect(resolve_url('question:list'))
     else:
         form = QuestionForm()
     return render(request, 'question/create.html', {'form': form})
-    
+
+@login_required
 def detail(request, id):
     question = Question.objects.get(id=id)
     form = CommentForm(initial={'questions': id})
