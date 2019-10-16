@@ -1,8 +1,0 @@
-{%extends 'question/base.html'%}
-{%block body%}
-    <form action='{%url "question:update" id=question.id%}' method='post'>
-        {%csrf_token%}
-        {{form.as_p}}
-        <input type="submit" value="Submit"/>
-    </form>
-{%endblock%}
